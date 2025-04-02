@@ -7,3 +7,5 @@ riderModule.iml
 .idea/
 .DS_Store
 .vs/
+/..csproj.user
+/..csproj
