@@ -45,16 +45,16 @@ namespace MyBackend.Controllers
             return Ok(user);
         }
 
-        [HttpPost("create")]
-        public async Task<ActionResult<User>> CreateUser(CreateModel data)
-        {
-            var user = await _userService.CreateUserAsync(data);
-            return CreatedAtAction(nameof(GetUser), new { id = user.Id }, user);
-            // user.Password = BCrypt.Net.BCrypt.HashPassword(user.Password);
-            // _context.Users.Add(user);
-            // await _context.SaveChangesAsync();
-            // return CreatedAtAction(nameof(GetUser), new { id = user.Id }, user);
-        }
+        // [HttpPost("create")]
+        // public async Task<ActionResult<User>> CreateUser(CreateModel data)
+        // {
+        //     var user = await _userService.CreateUserAsync(data);
+        //     return CreatedAtAction(nameof(GetUser), new { id = user.Id }, user);
+        //     // user.Password = BCrypt.Net.BCrypt.HashPassword(user.Password);
+        //     // _context.Users.Add(user);
+        //     // await _context.SaveChangesAsync();
+        //     // return CreatedAtAction(nameof(GetUser), new { id = user.Id }, user);
+        // }
 
         [HttpPatch("update/{id}")]
         [Authorize]

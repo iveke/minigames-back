@@ -48,7 +48,7 @@ namespace MiniGame.Services
         public async Task<User> CreateUserAsync(CreateModel data)
         {
             var password = User.HashPassword(data.password);
-            User user = new User(data.email, data.username, password, data.phone);
+            User user = new User(data.email, data.username, password);
 
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
@@ -129,19 +129,19 @@ namespace MiniGame.Services
         [StringLength(100, MinimumLength = 6, ErrorMessage = "Password must be at least 6 characters long")]
         public string password { get; set; }
 
-        [Required(ErrorMessage = "Phone number is required")]
-        public string phone { get; set; }
+        // [Required(ErrorMessage = "Phone number is required")]
+        // public string phone { get; set; }
 
     }
     public class UserDto
     {
         public int Id { get; set; }
         public string Username { get; set; }
-        public int Age { get; set; }
+        public int? Age { get; set; }
         public string Email { get; set; }
-        public string Country { get; set; }
-        public float AvgTotalScore;
-        public string Phone { get; set; }
+        public string? Country { get; set; }
+        public float? AvgTotalScore;
+        public string? Phone { get; set; }
         public RoleEnum Role;
         public bool ConfirmEmail { get; set; }
     }
