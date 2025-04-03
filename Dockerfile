@@ -10,7 +10,7 @@ COPY ["Minigame.csproj", "./"]
 RUN dotnet restore  # Відновлення залежностей
 
 COPY . .
-RUN dotnet publish -c Release -o /app/publish 
+RUN dotnet publish Minigame.csproj -c Release -o /app/publish 
 
 # 3️⃣ Запуск API
 FROM base AS final
