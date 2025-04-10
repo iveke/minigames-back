@@ -61,14 +61,14 @@ namespace MyBackend.Controllers
         public async Task<IActionResult> UpdateUser(UpdateModel updateData, [CurrentUser] User currentUser)
         {
             if (currentUser == null) return Unauthorized();
-            //             var result = await _userService.UpdateUserAsync(id, payload);
-            // if (result == null) return NotFound();
+            User result = await _userService.UpdateUserAsync(currentUser, updateData);
+            if (result == null) return NotFound();
 
+            return Ok(result);
+            // _context.Entry(updateData).State = EntityState.Modified;
+            // await _context.SaveChangesAsync();
 
-            _context.Entry(updateData).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
-
-            return NoContent();
+            // return NoContent();
         }
 
         [HttpPost("confirmEmail/{id}")]

@@ -58,19 +58,17 @@ namespace MiniGame.Services
 
         // Оновити дані користувача
 
-        public async Task<User> UpdateUserAsync(int userId, UpdateModel payload)
+        public async Task<User> UpdateUserAsync(User user, UpdateModel payload)
         {
-            var user = await _context.Users.FindAsync(userId);
-            if (user == null) return user;
-
-            // Перевіряємо унікальність username
+            // Перевірка на унікальність username
             if (!string.IsNullOrEmpty(payload.username) && payload.username != user.Username)
             {
                 var existingUser = await _context.Users.FirstOrDefaultAsync(u => u.Username == payload.username);
-                if (existingUser != null) return user; // Username вже зайнятий
+                if (existingUser != null) return user;  // Username вже зайнятий
                 user.Username = payload.username;
             }
 
+            // Оновлення інших полів
             if (!string.IsNullOrEmpty(payload.phone))
                 user.Phone = payload.phone;
 
@@ -80,7 +78,10 @@ namespace MiniGame.Services
             if (!string.IsNullOrEmpty(payload.Country))
                 user.Country = payload.Country;
 
+            // Оновлення через контекст
+            _context.Users.Update(user);
             await _context.SaveChangesAsync();
+
             return user;
         }
 
