@@ -134,6 +134,7 @@ namespace MiniGame.Services
         // public string phone { get; set; }
 
     }
+    
     public class UserDto
     {
         public int Id { get; set; }
