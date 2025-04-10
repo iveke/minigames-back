@@ -9,12 +9,15 @@ namespace MiniGame.Models
         public int Id { get; set; }
         public string Username { get; set; }
         public string Password { get; set; }
-        public int Age { get; set; }
+        public int? Age { get; set; }
         [Required]
         public string Email { get; set; }
-
+        public string? Country { get; set; }
+        public float? AvgTotalScore = 0;
+        public string? Phone{ get; set; }
         [Required]
         public RoleEnum Role = RoleEnum.USER;
+        public bool ConfirmEmail { get; set; } = false;
 
         public User(string email, string username, string password)
         {

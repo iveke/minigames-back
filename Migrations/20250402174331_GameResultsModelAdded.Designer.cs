@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MiniGame.Data;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace _.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250402174331_GameResultsModelAdded")]
+    partial class GameResultsModelAdded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -78,14 +81,8 @@ namespace _.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("Age")
+                    b.Property<int>("Age")
                         .HasColumnType("integer");
-
-                    b.Property<bool>("ConfirmEmail")
-                        .HasColumnType("boolean");
-
-                    b.Property<string>("Country")
-                        .HasColumnType("text");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -93,9 +90,6 @@ namespace _.Migrations
 
                     b.Property<string>("Password")
                         .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Phone")
                         .HasColumnType("text");
 
                     b.Property<string>("Username")

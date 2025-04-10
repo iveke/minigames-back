@@ -33,6 +33,7 @@ namespace MyBackend.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] CreateModel data)
         {
+            
             User user = await _userService.CreateUserAsync(data);
             var token = _jwtHelper.GenerateJwtToken(user.Username, user.Email, user.Password, user.Role, user.Id);
             return Ok(new { token });

@@ -2,8 +2,8 @@ services:
   - type: web
     name: Minigame
     env: docker
-    repo: https://github.com/твій-юзернейм/твій-репозиторій
-    region: oregon
+    repo: https://github.com/iveke/minigames-back
+    region: frankfurt
     plan: free
     buildCommand: dotnet publish -c Release -o out
     startCommand: dotnet out/Minigame.dll
@@ -11,4 +11,4 @@ services:
       - key: ASPNETCORE_ENVIRONMENT
         value: Production
       - key: PORT
-        value: 10000 
+        value: 10000
