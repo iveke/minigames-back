@@ -10,7 +10,7 @@ namespace MyBackend.Controllers
 {
     [Route("/user")]
     [ApiController]
-    
+
 
     public class UserController : ControllerBase
     {
@@ -26,14 +26,14 @@ namespace MyBackend.Controllers
         }
 
         [HttpGet("list")]
-        [Authorize] 
+        [Authorize]
         public async Task<ActionResult<IEnumerable<User>>> GetUsers()
         {
             return await _context.Users.ToListAsync();
         }
 
         [HttpGet("getInfo/{id}")]
-        [Authorize] 
+        [Authorize]
         public async Task<ActionResult<User>> GetUser(int id)
         {
             // var role = _jwtHelper.GetUsernameFromToken();
@@ -51,27 +51,34 @@ namespace MyBackend.Controllers
             return CreatedAtAction(nameof(GetUser), new { id = user.Id }, user);
         }
 
-        [HttpPut("update/{id}")]
-        [Authorize] 
-        public async Task<IActionResult> UpdateUser(int id, User user)
+        [HttpPatch("update")]
+        [Authorize]
+        public async Task<IActionResult> UpdateUser(UpdateUserData updateData, [CurrentUser] User currentUser)
         {
-            if (id != user.Id) return BadRequest();
-            _context.Entry(user).State = EntityState.Modified;
+            if (currentUser == null) return Unauthorized();
+
+            _context.Entry(updateData).State = EntityState.Modified;
             await _context.SaveChangesAsync();
+
             return NoContent();
         }
 
         [HttpDelete("delete/{id}")]
-        [Authorize] 
+        [Authorize]
         public async Task<IActionResult> DeleteUser(int id)
         {
             var role = User.FindFirst(ClaimTypes.Role)?.Value;
-Console.WriteLine($"THIS ROLE: {role}");
+            Console.WriteLine($"THIS ROLE: {role}");
             var user = await _context.Users.FindAsync(id);
             if (user == null) return NotFound();
             _context.Users.Remove(user);
             await _context.SaveChangesAsync();
             return NoContent();
         }
+    }
+    public class UpdateUserData
+    {
+        public int? age;
+        public string? username;
     }
 }

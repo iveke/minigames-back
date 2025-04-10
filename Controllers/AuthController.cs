@@ -34,7 +34,7 @@ namespace MyBackend.Controllers
         public async Task<IActionResult> Register([FromBody] CreateModel data)
         {
             User user = await _userService.CreateUserAsync(data);
-            var token = _jwtHelper.GenerateJwtToken(user.Username, user.Email, user.Password, user.Role);
+            var token = _jwtHelper.GenerateJwtToken(user.Username, user.Email, user.Password, user.Role, user.Id);
             return Ok(new { token });
         }
 
@@ -51,7 +51,7 @@ namespace MyBackend.Controllers
             {
                 return BadRequest(new { message = "InvalidPassword" });
             }
-            var token = _jwtHelper.GenerateJwtToken(dbUser.Username, dbUser.Email, dbUser.Password, dbUser.Role);
+            var token = _jwtHelper.GenerateJwtToken(dbUser.Username, dbUser.Email, dbUser.Password, dbUser.Role, dbUser.Id);
             return Ok(new { token });
         }
         public class LoginModel
