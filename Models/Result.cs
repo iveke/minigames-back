@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Runtime.InteropServices;
 using Microsoft.AspNetCore.Identity;
 
@@ -8,9 +9,12 @@ namespace MiniGame.Models
     {
         public int Id { get; set; }
         [Required]
+        [ForeignKey("Game")]
         public int GameId { get; set; }
-        [Required]
+        public virtual Game Game { get; set; }
+        [ForeignKey("User")]
         public int UserId { get; set; }
+        public virtual User User { get; set; }
         [Required]
         public DateTime PlayTime { get; set; }
         [Required]
