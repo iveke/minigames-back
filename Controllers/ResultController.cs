@@ -81,9 +81,10 @@ namespace _.Controllers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         [Authorize]
-        public async Task<ActionResult<Result>> PostResult(Result result)
+        public async Task<ActionResult<Result>> PostResult(Result result, [CurrentUser] User currentUser)
         {
 //            var token = await HttpContext.GetTokenAsync("access_token");
+            result.UserId = currentUser.Id;
             _context.Results.Add(result);
             await _context.SaveChangesAsync();
 
