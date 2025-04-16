@@ -71,20 +71,18 @@ namespace MyBackend.Controllers
             // return NoContent();
         }
 
-        [HttpPost("confirmEmail/{id}")]
+        [HttpPost("confirmEmail/{code}")]
         [Authorize]
-        public async Task<IActionResult> ConfirmEmail(int id)
+        public async Task<IActionResult> ConfirmEmail(string code, [CurrentUser] User currentUser)
         {
-            try
+            if (currentUser == null || currentUser.EmailVerificationCode != code)
             {
-                var result = await _userService.ConfirmEmailAsync(id);
-                if (!result) return NotFound();
-                return Ok(new { message = "Email confirmed successfully" });
+                Console.WriteLine(currentUser.EmailVerificationCode);
+                Console.WriteLine("CODE: {0}", code);
+                return BadRequest("INCORRECT_CODE");
             }
-            catch (InvalidOperationException ex)
-            {
-                return BadRequest(new { message = ex.Message });
-            }
+            var user = await _userService.ConfirmEmailAsync(code, currentUser);
+            return Ok(user);
         }
 
 

@@ -14,16 +14,19 @@ namespace MiniGame.Models
         public string Email { get; set; }
         public string? Country { get; set; }
         public float? AvgTotalScore = 0;
-        public string? Phone{ get; set; }
+
+        public string? EmailVerificationCode { get; set; } 
+        public string? Phone { get; set; }
         [Required]
         public RoleEnum Role = RoleEnum.USER;
         public bool ConfirmEmail { get; set; } = false;
 
-        public User(string email, string username, string password)
+        public User(string email, string username, string password, string emailVerificationCode)
         {
             this.Email = email;
             this.Username = username;
             this.Password = password;
+            this.EmailVerificationCode = emailVerificationCode;
         }
 
         // Метод для хешування пароля за допомогою bcrypt

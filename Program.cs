@@ -5,13 +5,18 @@ using MiniGame.Data;
 using MiniGame.Helpers;
 using MiniGame.Services;
 using System.Text;
+using DotNetEnv;
 
+Env.Load();
 var builder = WebApplication.CreateBuilder(args);
 
 
 builder.Services.AddControllers();
 builder.Services.AddScoped<AuthService>();
 builder.Services.AddScoped<UserService>();
+builder.Services.AddScoped<EmailService>();
+builder.Services.AddScoped<GameService>();
+builder.Services.AddScoped<ResultService>();
 
 builder.Services.AddCors(options =>
 {

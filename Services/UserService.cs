@@ -12,10 +12,13 @@ namespace MiniGame.Services
     public class UserService
     {
         private readonly AppDbContext _context;
+        private readonly EmailService _emailService;
 
-        public UserService(AppDbContext context)
+
+        public UserService(AppDbContext context, EmailService emailService)
         {
             _context = context;
+            _emailService = emailService;
         }
 
         // Отримати список користувачів
@@ -47,11 +50,13 @@ namespace MiniGame.Services
 
         public async Task<User> CreateUserAsync(CreateModel data)
         {
+            var code = new Random().Next(10000, 99999).ToString();
             var password = User.HashPassword(data.password);
-            User user = new User(data.email, data.username, password);
+            User user = new User(data.email, data.username, password, code);
 
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
+            await _emailService.SendEmailAsync(user.Email, code);
             return user;
         }
 
@@ -86,19 +91,15 @@ namespace MiniGame.Services
         }
 
         // Підтвердження email
-        public async Task<bool> ConfirmEmailAsync(int userId)
+        public async Task<User> ConfirmEmailAsync(string code, User user)
         {
-            var user = await _context.Users.FindAsync(userId);
-            if (user == null) return false; // Користувач не знайдений
-
-            if (user.ConfirmEmail)
-            {
-                throw new InvalidOperationException("Email is already confirmed.");
-            }
+            // var user = await _dbContext.Users.FirstOrDefaultAsync(x => x.Email == email);
 
             user.ConfirmEmail = true;
+            user.EmailVerificationCode = null; // опційно
             await _context.SaveChangesAsync();
-            return true;
+
+            return user;
         }
 
         // Видалити користувача
@@ -134,7 +135,7 @@ namespace MiniGame.Services
         // public string phone { get; set; }
 
     }
-    
+
     public class UserDto
     {
         public int Id { get; set; }
