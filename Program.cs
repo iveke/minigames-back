@@ -5,14 +5,33 @@ using MiniGame.Data;
 using MiniGame.Helpers;
 using MiniGame.Services;
 using System.Text;
+using DotNetEnv;
 
+Env.Load();
 var builder = WebApplication.CreateBuilder(args);
 
 
 builder.Services.AddControllers();
 builder.Services.AddScoped<AuthService>();
 builder.Services.AddScoped<UserService>();
+builder.Services.AddScoped<EmailService>();
+builder.Services.AddScoped<GameService>();
+builder.Services.AddScoped<ResultService>();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll",
+        policy =>
+        {
+            policy.AllowAnyOrigin()
+                  .AllowAnyMethod()
+                  .AllowAnyHeader();
+        });
+});
+builder.Services.AddControllers(options =>
+{
+    options.ModelBinderProviders.Insert(0, new CurrentUserModelBinderProvider());
+});
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -52,6 +71,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseCors("AllowAll");
 app.UseAuthentication();  // Add authentication middleware
 app.UseAuthorization();   // Add authorization middleware
 app.UseHttpsRedirection();

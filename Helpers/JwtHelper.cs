@@ -1,31 +1,35 @@
+using System;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using System;
 using MiniGame.Models;
+using MiniGame.Services;
 
 namespace MiniGame.Helpers
 {
     public class JwtHelper
     {
         private readonly IConfiguration _configuration;
+        private readonly UserService _userService;
 
-        public JwtHelper(IConfiguration configuration)
+        public JwtHelper(IConfiguration configuration, UserService userService)
         {
             _configuration = configuration;
+            _userService = userService;
         }
 
         // Генерація JWT токену
-        public string GenerateJwtToken(string username, string email, string password, RoleEnum role)
+        public string GenerateJwtToken(string username, string email, string password, RoleEnum role, int id)
         {
             var claims = new[]
             {
                 new Claim(ClaimTypes.Name, username),
                 new Claim(ClaimTypes.Email, email),
                 new Claim(ClaimTypes.Role, role.ToString()),
-                new Claim(ClaimTypes.Hash, password)
+                new Claim(ClaimTypes.Hash, password),
+                new Claim(ClaimTypes.NameIdentifier, id.ToString()),
             };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
@@ -70,7 +74,7 @@ namespace MiniGame.Helpers
         }
 
         // Витягування користувача (наприклад, імені) з токену
-        public string GetUsernameFromToken(string token)
+        public JWTPayloadUserData GetUserInfoFromToken(string token)
         {
             var principal = GetPrincipalFromToken(token);
             if (principal == null) return null;
@@ -79,10 +83,29 @@ namespace MiniGame.Helpers
             var role = principal.FindFirst(ClaimTypes.Role)?.Value;
             var email = principal.FindFirst(ClaimTypes.Email)?.Value;
             var password = principal.FindFirst(ClaimTypes.Hash)?.Value;
+            var id = int.Parse(principal.FindFirst(ClaimTypes.NameIdentifier)?.Value);
 
+            // User user = await _userService.GetUserByIdAsync(id);
+            // return { username: username, role: role, email: email, password: password, id: id}
 
-            // return {username, role, email, password};
-            return role;
+            return new JWTPayloadUserData
+            {
+                username = username,
+                role = role,
+                email = email,
+                passwordHash = password,
+                id = id
+            };
+            // return user;
         }
+
+    }
+    public class JWTPayloadUserData
+    {
+        public string username;
+        public string role;
+        public string email;
+        public int id;
+        public string passwordHash;
     }
 }

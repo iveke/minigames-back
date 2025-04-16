@@ -34,7 +34,7 @@ namespace MyBackend.Controllers
         public async Task<IActionResult> Register([FromBody] CreateModel data)
         {
             User user = await _userService.CreateUserAsync(data);
-            var token = _jwtHelper.GenerateJwtToken(user.Username, user.Email, user.Password, user.Role);
+            var token = _jwtHelper.GenerateJwtToken(user.Username, user.Email, user.Password, user.Role, user.Id);
             return Ok(new { token });
         }
 
@@ -51,8 +51,29 @@ namespace MyBackend.Controllers
             {
                 return BadRequest(new { message = "InvalidPassword" });
             }
-            var token = _jwtHelper.GenerateJwtToken(dbUser.Username, dbUser.Email, dbUser.Password, dbUser.Role);
+            var token = _jwtHelper.GenerateJwtToken(dbUser.Username, dbUser.Email, dbUser.Password, dbUser.Role, dbUser.Id);
             return Ok(new { token });
+        }
+
+        [HttpPost("generateConfirmEmailCode")]
+        [Authorize]
+        public async Task<IActionResult> SendCode([CurrentUser] User currentUser)
+        {
+            if (currentUser == null)
+            {
+                return Unauthorized("User not register");
+            }
+            if (currentUser.ConfirmEmail == true)
+            {
+                return BadRequest("User already confirm Email");
+            }
+            bool result = await _authService.SendCodeToEmail(currentUser);
+            if (!result)
+            {
+                return StatusCode(500, "Звертайтесь до адміна");
+            }
+            return Ok();
+
         }
         public class LoginModel
         {

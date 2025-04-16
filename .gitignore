@@ -9,3 +9,4 @@ riderModule.iml
 .vs/
 /..csproj.user
 /..csproj
+.env
