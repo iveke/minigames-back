@@ -52,7 +52,7 @@ namespace MyBackend.Controllers
                 return BadRequest(new { message = "InvalidPassword" });
             }
             var token = _jwtHelper.GenerateJwtToken(dbUser.Username, dbUser.Email, dbUser.Password, dbUser.Role, dbUser.Id);
-            return Ok(new { token });
+            return Ok(new { token, dbUser.ConfirmEmail });
         }
 
         [HttpPost("generateConfirmEmailCode")]
