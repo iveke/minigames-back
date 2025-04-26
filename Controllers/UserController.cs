@@ -73,9 +73,13 @@ namespace MyBackend.Controllers
 
         [HttpPost("confirmEmail/{code}")]
         [Authorize]
-        public async Task<IActionResult> ConfirmEmail(string code, [CurrentUser] User currentUser)
+        public async Task<IActionResult> ConfirmEmail(string code, [CurrentUser] User? currentUser)
         {
-            if (currentUser == null || currentUser.EmailVerificationCode != code)
+            if (currentUser == null)
+            {
+                return NotFound();
+            }
+            if (currentUser.EmailVerificationCode != code)
             {
                 Console.WriteLine(currentUser.EmailVerificationCode);
                 Console.WriteLine("CODE: {0}", code);
