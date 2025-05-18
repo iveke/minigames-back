@@ -10,13 +10,15 @@ namespace MiniGame.Models
         public string Username { get; set; }
         public string Password { get; set; }
         public int? Age { get; set; }
+
         [Required]
         public string Email { get; set; }
         public string? Country { get; set; }
         public float? AvgTotalScore = 0;
 
-        public string? EmailVerificationCode { get; set; } 
+        public string? EmailVerificationCode { get; set; }
         public string? Phone { get; set; }
+
         [Required]
         public RoleEnum Role = RoleEnum.USER;
         public bool ConfirmEmail { get; set; } = false;
@@ -28,6 +30,8 @@ namespace MiniGame.Models
             this.Password = password;
             this.EmailVerificationCode = emailVerificationCode;
         }
+
+        public User() { }
 
         // Метод для хешування пароля за допомогою bcrypt
         public static string HashPassword(string password)
