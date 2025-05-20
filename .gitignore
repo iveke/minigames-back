@@ -10,3 +10,4 @@ riderModule.iml
 /..csproj.user
 /..csproj
 .env
+*.csproj.user
