@@ -76,21 +76,20 @@ namespace _.Controllers
             return NoContent();
         }
         */
-        
+
         // POST: api/Results
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         [Authorize]
-        public async Task<ActionResult<Result>> PostResult(Result result, [CurrentUser] User currentUser)
+        public async Task<ActionResult<Result>> PostResult(ResultCreateModel data, [CurrentUser] User currentUser)
         {
-//            var token = await HttpContext.GetTokenAsync("access_token");
-            result.UserId = currentUser.Id;
+            Result result = new Result(data.gameId, currentUser.Id, data.playTime, data.points, data.duration, data.level);
             _context.Results.Add(result);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetResult", new { id = result.Id }, result);
         }
-        
+
         /*
         // DELETE: api/Results/5
         [HttpDelete("{id}")]
@@ -112,5 +111,15 @@ namespace _.Controllers
         {
             return _context.Results.Any(e => e.Id == id);
         }
+    }
+
+    public class ResultCreateModel
+    {
+        public int gameId { get; set; }
+        public DateTime playTime { get; set; }
+        public int points { get; set; }
+
+        public int duration { get; set; }
+        public int level { get; set; }
     }
 }

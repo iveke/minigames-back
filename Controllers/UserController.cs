@@ -117,7 +117,7 @@ public class UpdateModel
     public string? username { get; set; }
     // [Phone(ErrorMessage = "Invalid phone number format")]
     public string? phone { get; set; }
-    public int? Age { get; set; }
-    public string? Country { get; set; }
+    public int? age { get; set; }
+    public string? country { get; set; }
 }
 
