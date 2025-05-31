@@ -8,9 +8,11 @@ using Microsoft.AspNetCore.Authorization;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using System.Drawing;
+using Microsoft.AspNetCore.Cors;
 
 namespace MyBackend.Controllers
 {
+    [EnableCors("AllowAll")]
     [ApiController]
     [Route("/auth")]
     public class AuthController : ControllerBase

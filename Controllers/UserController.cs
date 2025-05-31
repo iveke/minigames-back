@@ -9,9 +9,11 @@ using System.Text.Json.Serialization;
 using System.ComponentModel.DataAnnotations;
 using System.Runtime.InteropServices;
 using MiniGame.Services;
+using Microsoft.AspNetCore.Cors;
 
 namespace MyBackend.Controllers
 {
+    [EnableCors("AllowAll")]
     [Route("/user")]
     [ApiController]
     public class UserController : ControllerBase
