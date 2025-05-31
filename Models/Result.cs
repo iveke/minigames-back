@@ -23,6 +23,8 @@ namespace MiniGame.Models
         public int Duration { get; set; }
         [Required]
         public int Level { get; set; }
+
+        public Result() { }
         public Result(int GameId, int UserId, DateTime PlayTime, int Points, int Duration, int Level)
         {
             this.GameId = GameId;
