@@ -38,7 +38,6 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
-
 // Add JWT authentication
 builder.Services.AddAuthorization();
 builder.Services.AddScoped<JwtHelper>();
