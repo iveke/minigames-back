@@ -21,13 +21,13 @@ jobs:
         dotnet-version: '8.x' # Specify your .NET SDK version, e.g., '6.x', '7.x', '8.x'
 
     - name: Restore dependencies
-      run: dotnet restore Minigame.sln # Replace Minigame.sln with the actual name of your solution file if different
+      run: dotnet restore minigames-back.sln # Replace Minigame.sln with the actual name of your solution file if different
 
     - name: Build project
-      run: dotnet build Minigame.sln --no-restore # Builds your solution, --no-restore ensures it uses already restored packages
+      run: dotnet build minigames-back.sln --no-restore # Builds your solution, --no-restore ensures it uses already restored packages
 
     - name: Run tests
-      run: dotnet test Minigame.sln --no-build --verbosity normal # Runs tests for the solution, --no-build uses already built binaries
+      run: dotnet test Tests/Tests.csproj --no-build --verbosity normal # Runs tests for the solution, --no-build uses already built binaries
 
     - name: Display test results (optional)
       if: always() # This step will always run, even if tests fail
